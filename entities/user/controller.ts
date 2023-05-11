@@ -27,6 +27,13 @@ export const userListByID = async (req) => {
   } else throw new Error("USER_NOT_FOUND");
 };
 
+export const getDentist = async () => {
+  return User.find(
+    { role: 'dentist' },
+    { name: 1, lastname: 1, phone_number: 1, email: 1 }
+  );
+};
+
 export const updateUser = async (data) => {
   if (data.token.role === "client" && data.params.id === data.token.id) {
     const user = await User.findOne({ _id: data.params.id });

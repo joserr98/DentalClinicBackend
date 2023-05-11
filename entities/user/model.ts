@@ -5,10 +5,7 @@ const User= mongoose.model('User', new mongoose.Schema({
         type:String,
         required:true
     },
-    lastname:{
-        type:String,
-        required:true
-    },
+    lastname: String,
     email:{
         type:String,
         required:true,
@@ -23,9 +20,10 @@ const User= mongoose.model('User', new mongoose.Schema({
     role:{
         type:String,
         required:true,
-        enum:['client','dentist']
+        enum:['client','dentist','admin']
 
     },
+    address: String,
     phone_number:{
         type:Number,
         required: true,

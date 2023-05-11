@@ -1,5 +1,5 @@
 import  express from 'express'
-import {  createUser, deleteUser, login, updateUser, userList, userListByID } from './controller.js'
+import {  createUser, deleteUser, login, updateUser, userList, userListByID, getDentist } from './controller.js'
 import { auth } from '../../core/middleware.js'
 
 const router= express.Router()
@@ -14,6 +14,16 @@ router.get('/' ,auth,async(req,res,next)=>{
     }
 
 })
+
+router.get('user/dentists' , async(req,res,next)=>{
+    try{
+        res.json(await getDentist())
+    }
+    catch(e){
+        next(e)
+    }
+})
+
 router.get('/:id' ,auth,async(req,res,next)=>{
     try{
         res.json(await userListByID(req))

@@ -18,6 +18,7 @@ export const listAppointment = async (data) => {
   const populateOptions = [
     { path: "client", select: ["name", "lastname", "deleted_at"] },
     { path: "dentist", select: ["name", "lastname", "deleted_at"] },
+    { path: "type", select: ["treatment"] }
   ];
   return await Appointment.find(filter, proyection)
     .populate(populateOptions)

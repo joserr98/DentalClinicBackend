@@ -12,7 +12,8 @@ export const listAppointment = async (data) => {
     ...(data.query.start_date && { start_date: { $lte: startDate } }),
     ...(data.query.end_date && { end_date: { $gt: endDate } }),
     ...(data.token.role === "client" && { client: data.token.id }),
-    ...(data.token.role === "dentist" && {}),
+    ...(data.token.role === "dentist" && { dentist: data.token.id }),
+    ...(data.token.role === "admin" && {}),
   };
   const proyection = { type: 1, dentist: 1, start_date: 1, end_date: 1 };
   const populateOptions = [

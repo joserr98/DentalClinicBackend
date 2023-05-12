@@ -2,7 +2,8 @@ import config from "./core/conf.js"
 import express from "express";
 import mongoose, { ConnectOptions } from "mongoose";
 import appointmentRouters from './entities/appointment/router.js'
-import routerUser from "./entities/user/router.js";
+import userRouters from "./entities/user/router.js";
+import treatmentRouters from "./entities/treatment/router.js"
 import { handlerError } from './core/middleware.js'
 import cors from 'cors'
 
@@ -30,7 +31,8 @@ mongooseConnection
 app.use(express.json());
 app.use(cors(corsOptions))
 app.use("/appointment", appointmentRouters);
-app.use('/user',routerUser)
+app.use('/user', userRouters)
+app.use('/treatment', treatmentRouters)
 app.use(handlerError);
 app.listen(config.PORT, () =>
   console.log(`Server up on port: ${config.PORT} ✔`)

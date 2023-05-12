@@ -6,7 +6,6 @@ const Treatment = mongoose.model('Treatment', new mongoose.Schema({
         required:true
     },
     created_at:Date,
-    updated_at:Date,
     deleted_at:Date
 
 },{versionKey:false}))

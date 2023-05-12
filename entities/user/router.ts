@@ -15,7 +15,7 @@ router.get('/' ,auth,async(req,res,next)=>{
 
 })
 
-router.get('user/dentists' , async(req,res,next)=>{
+router.get('/dentists' , async(req,res,next)=>{
     try{
         res.json(await getDentist())
     }

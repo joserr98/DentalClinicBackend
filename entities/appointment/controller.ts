@@ -17,17 +17,25 @@ export const listAppointment = async (data) => {
   };
   const proyection = { type: 1, dentist: 1, start_date: 1, end_date: 1 };
   const populateOptions = [
-    { path: "client", select: ["name", "lastname", "deleted_at"] },
-    { path: "dentist", select: ["name", "lastname", "deleted_at"] },
+    { path: "client", select: ["name", "lastname"] },
+    { path: "dentist", select: ["name", "lastname"] },
     { path: "type", select: ["treatment"] }
   ];
   return await Appointment.find(filter, proyection)
     .populate(populateOptions)
-    .sort({ start_date: 1 });
+    .sort({ start_date: -1 });
 };
 
 export const detailedAppointment = async (data) => {
-  const appointment = await Appointment.findOne({ _id: data.params.id });
+  const filter = { _id: data.params.id }  
+  const proyection = { updated_at: 0, deleted_at: 0 };
+  const populateOptions = [
+    { path: "client", select: ["name", "lastname"] },
+    { path: "dentist", select: ["name", "lastname"] },
+    { path: "type", select: ["treatment"] }
+  ];
+  const appointment = await Appointment.findOne(filter, proyection)
+    .populate(populateOptions);
   if (!appointment) throw new Error("NO_APPOINTMENT");
   if (
     data.token.role == "admin" || data.token.role == "dentist" && data.token.id == appointment.dentist ||

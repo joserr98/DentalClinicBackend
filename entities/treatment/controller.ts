@@ -1,7 +1,7 @@
 import Treatment from "./model.js";
 
 export const listTreatments = () => {
-    return Treatment.find({deleted_at: null}, {treatment: 1})
+    return Treatment.find({deleted_at: null})
 }
 
 export const createTreatment = async (req) => {

@@ -41,7 +41,6 @@ export const userListByID = async (req) => {
 export const getDentist = async () => {
   return User.find(
     { role: "dentist" },
-    { name: 1, lastname: 1, phone_number: 1, email: 1 }
   );
 };
 

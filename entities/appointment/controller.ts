@@ -19,7 +19,7 @@ export const listAppointment = async (data) => {
   const populateOptions = [
     { path: "client", select: ["name", "lastname"] },
     { path: "dentist", select: ["name", "lastname"] },
-    { path: "type", select: ["treatment"] }
+    { path: "type", select: ["name"] }
   ];
   return await Appointment.find(filter, proyection)
     .populate(populateOptions)
@@ -32,7 +32,7 @@ export const detailedAppointment = async (data) => {
   const populateOptions = [
     { path: "client", select: ["name", "lastname"] },
     { path: "dentist", select: ["name", "lastname"] },
-    { path: "type", select: ["treatment"] }
+    { path: "type", select: ["name"] }
   ];
   const appointment = await Appointment.findOne(filter, proyection)
     .populate(populateOptions);

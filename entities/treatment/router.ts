@@ -11,7 +11,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.post("/",  async (req, res, next) => {
+router.post("/", auth,  async (req, res, next) => {
   try {
     res.json(await createTreatment(req));
   } catch (e) {
@@ -19,7 +19,7 @@ router.post("/",  async (req, res, next) => {
   }
 });
 
-router.delete("/:id",  async (req, res, next) => {
+router.delete("/:id", auth,  async (req, res, next) => {
   try {
     res.json(await deleteTreatment(req));
   } catch (e) {

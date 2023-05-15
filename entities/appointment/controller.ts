@@ -37,6 +37,7 @@ export const detailedAppointment = async (data) => {
   const appointment = await Appointment.findOne(filter, proyection)
     .populate(populateOptions);
   if (!appointment) throw new Error("NO_APPOINTMENT");
+  console.log(appointment.dentist)
   if (
     data.token.role == "admin" || data.token.role == "dentist" && data.token.id == appointment.dentist ||
     (data.token.role == "client" && data.token.id == appointment.client)

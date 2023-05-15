@@ -44,6 +44,18 @@ export const getDentist = async () => {
   );
 };
 
+export const getClients = async () => {
+  return User.find(
+    { role: "client" },
+  );
+};
+
+export const getAdmins = async () => {
+  return User.find(
+    { role: "admin" },
+  );
+};
+
 export const updateUser = async (data) => {
   if (data.token.role !== "admin" && data.params.id === data.token.id || data.token.role === "admin") {
     const user = await User.findOne({ _id: data.params.id });

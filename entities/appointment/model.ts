@@ -21,11 +21,9 @@ const Appointment = mongoose.model(
       },
       start_date: {
         type: Date,
-        required: true,
       },
       end_date: {
         type: Date,
-        required: true,
       },
       created_at: Date,
       updated_at: Date,

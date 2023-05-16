@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 export const userList = async (req) => {
   const regExpLastname = new RegExp(req.query.lastname, "i");
   const regExpName = new RegExp(req.query.name, "i");
-  if (req.token.role == "client") {
+  if (req.token.role != "admin") {
     return User.find(
       { _id: req.token.id },
       { name: 1, lastname: 1, phone_number: 1, email: 1 }
@@ -14,7 +14,6 @@ export const userList = async (req) => {
   } else {
     return User.find(
       {
-        _id: req.token.id,
         name: regExpName,
         lastname: regExpLastname,
         deleted_at: null,

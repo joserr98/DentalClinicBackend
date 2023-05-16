@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const Treatment = mongoose.model('Treatment', new mongoose.Schema({
-    name:{
+    treatment:{
         type:String,
         required:true
     },

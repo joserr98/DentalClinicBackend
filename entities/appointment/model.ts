@@ -1,21 +1,21 @@
-import mongoose from "mongoose";
+import mongoose, {Schema} from "mongoose";
 
 const Appointment = mongoose.model(
   "Appointment",
   new mongoose.Schema(
     {
       type: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.Mixed,
         required: true,
         ref: 'Treatment'
       },
       client: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.Mixed,
         required: true,
         ref: 'User'
       },
       dentist: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.Mixed,
         required: true,
         ref: 'User'
       },

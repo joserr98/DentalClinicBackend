@@ -4,21 +4,22 @@ import config from "../../core/conf.js";
 import jwt from "jsonwebtoken";
 
 export const userList = async (req) => {
-  const regExpLastname = new RegExp(req.query.lastname, "i");
   const regExpName = new RegExp(req.query.name, "i");
   if (req.token.role != "admin") {
     return User.find(
       { _id: req.token.id },
-      { name: 1, lastname: 1, phone_number: 1, email: 1 }
+      { updated_at: 0, password: 0, deleted_at: 0, created_at: 0 }
     );
   } else {
     return User.find(
       {
-        name: regExpName,
-        lastname: regExpLastname,
+        $or: [
+          { name: regExpName },
+          { lastname: regExpName }
+        ],
         deleted_at: null,
       },
-      { name: 1, lastname: 1, phone_number: 1, email: 1, role: 1 }
+      { updated_at: 0, password: 0, deleted_at: 0, created_at: 0 }
     );
   }
 };
@@ -27,7 +28,7 @@ export const userListByID = async (req) => {
   if (req.token.role == "client" && req.params.id == req.token.id) {
     return User.findById(
       { _id: req.params.id },
-      { name: 1, lastname: 1, phone_number: 1, email: 1}
+      {  updated_at: 0, password: 0, deleted_at: 0, created_at: 0 }
     );
   } else if (req.token.role !== "client") {
     return User.findById(

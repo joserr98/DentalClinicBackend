@@ -2,12 +2,14 @@ import Appointment from "./model.js";
 
 export const listAppointment = async (data) => {
   const appointmentTypeRegex = new RegExp(data.query.type, "i");
+  const dentistNameRegex = new RegExp(data.query.dentist, "i");
+  const clientNameRegex = new RegExp(data.query.client, "i");
   const startDate = new Date(data.query.start_date);
   const endDate = new Date(data.query.end_date);
   const filter = {
     deleted_at: null,
-    ...(data.query.client && { client: data.query.client }),
-    ...(data.query.dentist && { dentist: data.query.dentist }),
+    ...(data.query.client && { client : clientNameRegex }),
+    ...(data.query.dentist && { dentist : dentistNameRegex }),
     ...(data.query.type && { type: appointmentTypeRegex }),
     ...(data.query.start_date && { start_date: { $lte: startDate } }),
     ...(data.query.end_date && { end_date: { $gt: endDate } }),
@@ -27,29 +29,29 @@ export const listAppointment = async (data) => {
 };
 
 export const detailedAppointment = async (data) => {
-  const filter = { _id: data.params.id }  
+  const filter = { _id: data.params.id };
   const proyection = { updated_at: 0, deleted_at: 0 };
   const populateOptions = [
     { path: "client", select: ["name", "lastname"] },
     { path: "dentist", select: ["name", "lastname"] },
-    { path: "type", select: ["name"] }
+    { path: "type", select: ["name"] },
   ];
-  const appointment = await Appointment.findOne(filter, proyection)
+  const appointment = await Appointment.findOne(filter, proyection);
   if (!appointment) throw new Error("NO_APPOINTMENT");
   if (
     data.token.role === "admin" ||
     (data.token.role === "dentist" && data.token.id == appointment.dentist) ||
     (data.token.role === "client" && data.token.id == appointment.client)
   ) {
-    return appointment.populate(populateOptions)
-  } else throw new Error ("INVALID_USER_ROLE")
+    return appointment.populate(populateOptions);
+  } else throw new Error("INVALID_USER_ROLE");
 };
 
 export const createAppointment = async (data) => {
   const { body, token } = data;
   const { dentist, client, start_date, end_date } = body;
   if (start_date > end_date) {
-    throw new Error ("WRONG_DATE");
+    throw new Error("WRONG_DATE");
   }
   const appointmentExists = await Appointment.findOne({
     $or: [{ dentist }, { client }],
@@ -90,8 +92,11 @@ export const deleteAppointment = async (req) => {
     deleted_at: null,
   });
   if (!appointment) throw new Error("NO_APPOINTMENT");
-  if (token.role === 'client' && appointment.client != token.id || 
-      token.role === "dentist" && appointment.dentist != token.id) throw new Error ('INVALID_AUTH')
+  if (
+    (token.role === "client" && appointment.client != token.id) ||
+    (token.role === "dentist" && appointment.dentist != token.id)
+  )
+    throw new Error("INVALID_AUTH");
   body.deleted_at = new Date();
   body.client = token.id;
   await Appointment.findOneAndUpdate(
@@ -115,8 +120,11 @@ export const modifyAppointment = async (data) => {
   if (!appointment) {
     throw new Error("NO_APPOINTMENT");
   }
-  if (token.role === 'client' && appointment.client != token.id || 
-  token.role === "dentist" && appointment.dentist != token.id) throw new Error ('INVALID_AUTH')
+  if (
+    (token.role === "client" && appointment.client != token.id) ||
+    (token.role === "dentist" && appointment.dentist != token.id)
+  )
+    throw new Error("INVALID_AUTH");
   const appointmentExists = await Appointment.findOne({
     $or: [{ dentist: appointment.dentist }, { client: appointment.client }],
     $and: [

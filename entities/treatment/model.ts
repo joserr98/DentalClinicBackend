@@ -5,6 +5,8 @@ const Treatment = mongoose.model('Treatment', new mongoose.Schema({
         type:String,
         required:true
     },
+    duration: Number,
+    price: Number,
     created_at:Date,
     deleted_at:Date
 
